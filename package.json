@@ -1,28 +1,28 @@
 {
-  "name": "eio-code-component",
+  "name": "oih-code-component",
   "version": "1.2.1",
-  "description": "elastic.io code component",
+  "description": "oih fork of the elastic.io code component",
   "engines": {
     "node": ">=12.13.0"
   },
   "scripts": {
-    "docker:build": "docker build -t elasticio/code-component:$(git log -n1 --format=%H) .",
-    "docker:push": "docker push elasticio/code-component:$(git log -n1 --format=%H)",
+    "docker:build": "docker build -t openintegrationhub/code-component:$(git log -n1 --format=%H) .",
+    "docker:push": "docker push openintegrationhub/code-component:$(git log -n1 --format=%H)",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "NODE_ENV=test LOG_LEVEL=trace mocha ./spec/** --timeout 50000"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:elasticio/code-component.git"
+    "url": "git@github.com:openintegrationhub/code-component.git"
   },
   "author": "elastic.io GmbH",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "@openintegrationhub/ferryman": "^1.1.3",
     "co": "4.6.0",
     "co-request": "1.0.0",
-    "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.13"
+    "elasticio-node": "0.0.9"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
