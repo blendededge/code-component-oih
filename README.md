@@ -1,23 +1,6 @@
 # code-component
 
-> A code component for the [elastic.io platform](https://www.elastic.io "elastic.io platform"), runs a piece of a JavaScript code inside your integration flow.
-
-## Documentation
-
-Pretty much the same way that you would use any other component in our system. It is deployed by default to production,
-so no need to deploy it yourself (although you could if you have extended it yourself). In our Dashboard
-start building your integration and include the Code component as well. You will see a picture similar to the one below:
-
-![image](https://user-images.githubusercontent.com/2523461/68778086-f3678280-0632-11ea-9e9c-d2a888fd5788.png)
-
-
-However, don't let the simple look fool you - it has a full-fledged interface with many very useful features like the ones you would expect from your favourite desktop developing tool:
-
- * Syntax highlighting - a standard for any online real-time coding interface
- * Code auto-completion - again a standard that you got used to from your desktop tool
- * Support for number of variables and libraries within the context of the execution
- * Support latest ECMAScript standard
- * Run and troubleshoot within the designer interface.
+> A code component forked from the [elastic.io code-component](https://github.com/elasticio/code-component), runs a piece of a JavaScript code inside your flow.
 
 ## Available Variables and Libraries
 Here are the available variables and libraries that can be used within the context of execution. The most up-to-date list
@@ -26,7 +9,7 @@ Built-in Node.js global objects are also supported.
 
 ### Elastic.io Specific Functionality
 - `msg` - incoming message containing the payload from the previous step
-- `cfg` - step's configuration. At the moment contains only one property: `code` (the code, being executed)
+- `cfg` - step's configuration. At the moment contains only one property: `code` (the code, being executed). May contain further attributes passed through the `fields` propery in the flow definition
 - `snapshot` - step's snapshot
 - `messages` - utility for convenient message creation
 - `emitter` user to emit messages and errors
@@ -76,22 +59,13 @@ It's very simple to code a small REST API call out of the Code component, see fo
 ```JavaScript
 async function run(msg, cfg, snapshot) {
   const res = await request.get({
-    uri: 'https://api.elastic.io/v1/users',
-    auth: {
-      user: process.env.ELASTICIO_API_USERNAME,
-      pass: process.env.ELASTICIO_API_KEY
-    },
+    uri: 'https://postman-echo.com/get?foo1=bar1&foo2=bar2',
     json: true  
   });
   return {
-    fullName: res.body.first_name + " " + res.body.last_name,
-    email: res.body.email,
-    userID: res.body.id    
+    arguments: response.body.args
   }
 }
 ```
 
-## Known issues and limitations
-
- - Credentials are not supported
  
