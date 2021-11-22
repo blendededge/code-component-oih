@@ -23,6 +23,8 @@ jobs:
         with:
           ref: 'master'
           fetch-depth: 0
+      - run: git config --global user.name 'Blended Edge'
+      - run: git config --global user.email 'robb@blendededge.com'
       - name: NPM Increment Version
         run: npm version --allow-same-version from-git
       - name: Docker meta
