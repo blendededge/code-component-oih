@@ -20,8 +20,6 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
-      - name: NPM Increment Version
-        run: npm version --allow-same-version from-git
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
