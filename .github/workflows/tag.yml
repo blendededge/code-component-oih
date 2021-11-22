@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
+        with:
+          ref: 'master'
+      - name: NPM Increment Version
+        run: npm version --allow-same-version from-git
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
@@ -57,5 +61,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: NPM Increment Version
-        run: npm version patch
