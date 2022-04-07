@@ -1,23 +1,23 @@
 {
   "name": "oih-code-component",
   "version": "1.2.2",
-  "description": "oih fork of the elastic.io code component",
+  "description": "Code Component for Open Integration Hub",
   "engines": {
     "node": ">=12.13.0"
   },
   "scripts": {
-    "docker:build": "docker build -t openintegrationhub/code-component:$(git log -n1 --format=%H) .",
-    "docker:push": "docker push openintegrationhub/code-component:$(git log -n1 --format=%H)",
+    "docker:build": "docker build -t blendededge/code-component-oih:$(git log -n1 --format=%H) .",
+    "docker:push": "docker push blendededge/code-component-oih:$(git log -n1 --format=%H)",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "NODE_ENV=test LOG_LEVEL=trace mocha ./spec/** --timeout 50000"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:openintegrationhub/code-component.git"
+    "url": "git@github.com:blendededge/code-component-oih.git"
   },
-  "author": "elastic.io GmbH",
-  "license": "BSD-2-Clause",
+  "author": "Blended Edge",
+  "license": "Apache 2.0",
   "dependencies": {
     "@openintegrationhub/ferryman": "^1.1.3",
     "co": "4.6.0",
