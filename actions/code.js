@@ -5,7 +5,7 @@ const { messages } = require('elasticio-node');
 const co = require('co');
 const request = require('co-request');
 const moment = require('moment');
-const crypto = require('crypto');
+const crypto = require('crypto-js');
 
 function wait(timeout) {
   return new Promise((ok) => {
