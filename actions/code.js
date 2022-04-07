@@ -4,6 +4,8 @@ const vm = require('vm');
 const { messages } = require('elasticio-node');
 const co = require('co');
 const request = require('co-request');
+const moment = require('moment');
+const crypto = require('crypto');
 
 function wait(timeout) {
   return new Promise((ok) => {
@@ -43,6 +45,8 @@ exports.process = async function (msg, conf, snapshot) {
     _,
     request,
     wait: wait.bind(this),
+    moment,
+    crypto,
   });
   this.logger.debug('Running the code %s', conf.code);
   vm.runInContext(conf.code, ctx, {
