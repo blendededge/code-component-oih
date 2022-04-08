@@ -1,6 +1,6 @@
 {
   "name": "oih-code-component",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "Code Component for Open Integration Hub",
   "engines": {
     "node": ">=12.13.0"
