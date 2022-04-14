@@ -6,6 +6,7 @@ const co = require('co');
 const request = require('co-request');
 const moment = require('moment');
 const crypto = require('crypto-js');
+const { wrapper } = require('ferryman-extensions');
 
 function wait(timeout) {
   return new Promise((ok) => {
@@ -19,6 +20,7 @@ function wait(timeout) {
 
 // eslint-disable-next-line consistent-return,func-names
 exports.process = async function (msg, conf, snapshot) {
+  const wrapped = wrapper(this, msg, conf, snapshot);
   const vmExports = {};
   const ctx = vm.createContext({
     // Node Globals
@@ -37,7 +39,7 @@ exports.process = async function (msg, conf, snapshot) {
     URLSearchParams,
 
     // EIO Specific Functionality
-    emitter: this,
+    emitter: wrapped,
     messages,
     msg,
 
