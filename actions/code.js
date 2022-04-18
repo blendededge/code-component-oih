@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const _ = require('lodash');
 const vm = require('vm');
-const messages = require('../lib/messages');
 const co = require('co');
 const request = require('co-request');
 const moment = require('moment');
 const crypto = require('crypto-js');
 const { wrapper } = require('@blendededge/ferryman-extensions');
+const messages = require('../lib/messages');
 
 function wait(timeout) {
   return new Promise((ok) => {
@@ -72,7 +72,7 @@ exports.process = async function (msg, conf, snapshot) {
         returnResult = await result;
         this.logger.debug('Promise resolved');
         if (returnResult) {
-          return messages.newMessageWithBody(returnResult);
+          return messages.newMessageWithData(returnResult);
         }
         this.emit('end');
       } catch (e) {
