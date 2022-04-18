@@ -3,6 +3,7 @@ WORKDIR /app
 RUN apk update && apk add --no-cache \
     bash
 COPY actions actions
+COPY lib lib
 COPY component.json component.json
 COPY package.json package.json
 COPY README.md README.md
