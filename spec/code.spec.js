@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 const chai = require('chai');
 const sinon = require('sinon');
-const logger = require('@elastic.io/component-logger')();
 const action = require('../actions/code');
 
 const { expect } = chai;
@@ -17,7 +16,11 @@ describe('code test', () => {
       emit: sinon.spy(),
     };
     self = {
-      logger,
+      logger: {
+        debug: () => {},
+        error: () => {},
+        info: () => {},
+      },
       emit: emitter.emit,
     };
   });
