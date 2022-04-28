@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const _ = require('lodash');
 const vm = require('vm');
-const { messages } = require('elasticio-node');
 const co = require('co');
 const request = require('co-request');
 const moment = require('moment');
 const crypto = require('crypto-js');
 const { wrapper } = require('@blendededge/ferryman-extensions');
+const messages = require('../lib/messages');
 
 function wait(timeout) {
   return new Promise((ok) => {
@@ -20,7 +20,7 @@ function wait(timeout) {
 
 // eslint-disable-next-line consistent-return,func-names
 exports.process = async function (msg, conf, snapshot) {
-  const wrapped = wrapper(this, msg, conf, snapshot);
+  const emitter = wrapper(this, msg, conf, snapshot);
   const vmExports = {};
   const ctx = vm.createContext({
     // Node Globals
@@ -39,7 +39,7 @@ exports.process = async function (msg, conf, snapshot) {
     URLSearchParams,
 
     // EIO Specific Functionality
-    emitter: wrapped,
+    emitter,
     messages,
     msg,
 
@@ -60,10 +60,10 @@ exports.process = async function (msg, conf, snapshot) {
     if (ctx.run.constructor.name === 'GeneratorFunction') {
       this.logger.debug('Run variable is a generator');
       const fn = co.wrap(ctx.run);
-      result = fn.apply(this, [msg, conf, snapshot]);
+      result = fn.apply(emitter, [msg, conf, snapshot]);
     } else {
       this.logger.debug('Run variable is a function, calling it');
-      result = ctx.run.apply(this, [msg, conf, snapshot]);
+      result = ctx.run.apply(emitter, [msg, conf, snapshot]);
     }
     if (typeof result === 'object' && typeof result.then === 'function') {
       this.logger.debug('Returned value is a promise, will evaluate it');
@@ -72,9 +72,9 @@ exports.process = async function (msg, conf, snapshot) {
         returnResult = await result;
         this.logger.debug('Promise resolved');
         if (returnResult) {
-          return messages.newMessageWithBody(returnResult);
+          return messages.newMessageWithData(returnResult);
         }
-        this.emit('end');
+        emitter.emit('end');
       } catch (e) {
         this.logger.error('Promise failed', e);
         throw e;
@@ -82,6 +82,6 @@ exports.process = async function (msg, conf, snapshot) {
     }
   } else {
     this.logger.debug("Run function was not found, it's over now");
-    this.emit('end');
+    emitter.emit('end');
   }
 };
