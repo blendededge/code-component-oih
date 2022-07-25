@@ -19,8 +19,8 @@
   "author": "Blended Edge",
   "license": "Apache-2.0",
   "dependencies": {
-    "@blendededge/ferryman-extensions": "^1.1.1",
-    "@openintegrationhub/ferryman": "~2.1.0",
+    "@blendededge/ferryman-extensions": "^1.2.1",
+    "@openintegrationhub/ferryman": "^2.1.1",
     "co": "4.6.0",
     "co-request": "1.0.0",
     "crypto-js": "^4.1.1",
