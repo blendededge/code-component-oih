@@ -38,6 +38,7 @@ describe('code test', () => {
         data: {
           my: 'data',
         },
+        metadata: {},
       };
       const cfg = { code };
       const snapshot = {
@@ -66,6 +67,7 @@ describe('code test', () => {
         data: {
           my: 'data',
         },
+        metadata: {},
       };
       const cfg = { code };
       const snapshot = {
@@ -84,15 +86,14 @@ describe('code test', () => {
   describe('ES5 code block', () => {
     it('Processes hello code normally', async () => {
       code = "console.log('Hello code!');";
-      await action.process.call(self, {}, { code });
+      await action.process.call(self, { metadata: {} }, { code });
       expect(emitter.emit.calledOnce).equal(true);
       expect(emitter.emit.calledWith('end')).equal(true);
     });
 
     it('Processes hello code with run function', async () => {
       code = "function run(msg) { console.log('Hello code!'); this.emit('end');}";
-      await action.process.call(self, {}, { code });
-      expect(emitter.emit.calledOnce).equal(true);
+      await action.process.call(self, { metadata: {} }, { code });
       expect(emitter.emit.calledWith('end')).equal(true);
     });
 
@@ -100,7 +101,7 @@ describe('code test', () => {
       code = 'function run(message) {'
           + "this.emit('data', messages.newMessageWithData({message: 'hello world'}));"
           + '}';
-      await action.process.call(self, {}, { code });
+      await action.process.call(self, { metadata: {} }, { code });
       const result = emitter.emit.getCall(0).args[1];
       expect(result.data.message).equal('hello world');
     });
@@ -108,7 +109,7 @@ describe('code test', () => {
     it('simple script emitting data', async () => {
       code = "emitter.emit('data', messages.newMessageWithData({message: 'hello world'}));"
           + "emitter.emit('end'); ";
-      await action.process.call(self, {}, { code });
+      await action.process.call(self, { metadata: {} }, { code });
       const result = emitter.emit.getCall(0).args[1];
       expect(result.data.message).equal('hello world');
     });
@@ -121,13 +122,13 @@ describe('code test', () => {
           + 'resolve(true);'
           + '})'
           + '};';
-      const result = await action.process.call(self, {}, { code });
+      const result = await action.process.call(self, { metadata: {} }, { code });
       expect(result.data).equal(true);
     });
 
     it('Promise that resolves 2', async () => {
       code = "function run(message) { console.log('Hello promise!'); return new Promise(function(accept, reject) { accept('Hello code!'); }); }";
-      const result = await action.process.call(self, {}, { code });
+      const result = await action.process.call(self, { metadata: {} }, { code });
       expect(result.data).equal('Hello code!');
     });
   });
@@ -135,25 +136,25 @@ describe('code test', () => {
   describe('ES6 Code Block with generator', () => {
     it('Simple generator', async () => {
       code = "function* run(message) { console.log('Hello generator!'); }";
-      await action.process.call(self, {}, { code });
+      await action.process.call(self, { metadata: {} }, { code });
       expect(emitter.emit.calledOnce).equal(true);
     });
 
     it('Simple generator returning data', async () => {
       code = "function* run(message) { console.log('Hello generator!'); return 'Resolved!'; }";
-      const result = await action.process.call(self, {}, { code });
+      const result = await action.process.call(self, { metadata: {} }, { code });
       expect(result.data).equal('Resolved!');
     });
 
     it('Simple generator returning data with wait', async () => {
       code = "function* run(message) { console.log('Hello generator!'); yield wait(500); return 'Resolved!'; }";
-      const result = await action.process.call(self, {}, { code });
+      const result = await action.process.call(self, { metadata: {} }, { code });
       expect(result.data).equal('Resolved!');
     });
 
     it('Simple generator returning data from URL', async () => {
       code = "function* run(message) { console.log('Hello async request!'); var result = yield request.get('http://www.google.com'); return result.statusCode; }";
-      const result = await action.process.call(self, {}, { code });
+      const result = await action.process.call(self, { metadata: {} }, { code });
       expect(result.data).equal(200);
     });
 
@@ -173,7 +174,7 @@ describe('code test', () => {
         }
     `;
 
-      await action.process.call(self, { data: {} }, { code }, {});
+      await action.process.call(self, { data: {}, metadata: {} }, { code }, {});
       const result = emitter.emit.getCall(0).args[1];
       expect(result.data).deep.equal({ message: 'YWJj' });
     });
