@@ -19,8 +19,8 @@ function wait(timeout) {
 }
 
 // eslint-disable-next-line consistent-return,func-names
-exports.process = async function (msg, conf, snapshot) {
-  const emitter = wrapper(this, msg, conf, snapshot);
+exports.process = async function (msg, conf, snapshot, msgHeaders, tokenData) {
+  const emitter = wrapper(this, msg, conf, snapshot, msgHeaders, tokenData);
   const vmExports = {};
   const ctx = vm.createContext({
     // Node Globals
@@ -79,6 +79,8 @@ exports.process = async function (msg, conf, snapshot) {
         this.logger.error('Promise failed', e);
         throw e;
       }
+    } else {
+      emitter.emit('end');
     }
   } else {
     this.logger.debug("Run function was not found, it's over now");
