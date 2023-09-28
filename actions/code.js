@@ -20,7 +20,7 @@ function wait(timeout) {
 
 // eslint-disable-next-line consistent-return,func-names
 exports.process = async function (msg, conf, snapshot, msgHeaders, tokenData) {
-  const emitter = wrapper(this, msg, conf, snapshot, msgHeaders, tokenData);
+  const emitter = await wrapper(this, msg, conf, snapshot, msgHeaders, tokenData);
   const vmExports = {};
   const ctx = vm.createContext({
     // Node Globals

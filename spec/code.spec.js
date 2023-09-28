@@ -20,6 +20,7 @@ describe('code test', () => {
         debug: () => {},
         error: () => {},
         info: () => {},
+        child: () => self.logger,
       },
       emit: emitter.emit,
     };

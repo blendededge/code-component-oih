@@ -1,4 +1,4 @@
-FROM node:10-alpine AS base
+FROM node:18-alpine AS base
 WORKDIR /app
 RUN apk update && apk add --no-cache \
     bash
@@ -10,7 +10,7 @@ COPY README.md README.md
 
 FROM base AS dependencies
 RUN apk update && apk add --no-cache \
-    python \
+    python3 \
     g++ \
     make
 RUN npm install --production
